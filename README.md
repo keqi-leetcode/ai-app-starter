@@ -123,6 +123,9 @@ python step2_stream.py
 | `NotFoundError` / `404` | 模型名写错 | 去平台控制台复制当前准确的模型名 |
 | `ConnectionError` / 超时 | 网络问题 | 换平台试试，或检查是否需要代理 |
 | 中文乱码 | 终端编码 | PowerShell 里执行 `chcp 65001` |
+| `ssh: connect to host github.com port 22: Connection refused` | 22 端口被挡 | 让 SSH 走 443：`ssh.github.com:443` |
+| `schannel ... CRYPT_E_NO_REVOCATION_CHECK` | 代理/加速器拦截了证书吊销检查 | 换 `http.sslBackend openssl`，或直接改走 SSH |
+| `Bad owner or permissions on .ssh/config` | SSH 配置/私钥权限太宽 | `icacls "文件" /inheritance:r /grant:r "用户名:(R)"` |
 
 **卡住了就把完整报错发我，别自己硬扛超过 30 分钟。**
 ## 我的学习记录
