@@ -5,11 +5,22 @@ Day 3 第一步：把"问一次"改成"一直问"。
 import os
 import sys
 import argparse
+import logging
 
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler("app.log", encoding="utf-8"),
+    ],
+)
+logger = logging.getLogger(__name__)
 
 api_key = os.getenv("LLM_API_KEY")
 base_url = os.getenv("LLM_BASE_URL")
@@ -32,6 +43,7 @@ if not base_url or not model:
     sys.exit("❌ .env 里的 LLM_BASE_URL 或 LLM_MODEL 没填")
 
 client = OpenAI(api_key=api_key, base_url=base_url)
+logger.info("启动：model=%s, temperature=%s", model, TEMPERATURE)
 
 SYSTEM_PROMPT = args.system or "你是一个讲技术很清楚的人。"
 
@@ -43,6 +55,7 @@ messages= [
 
 while True:
     question = input("\n你：").strip()
+    logger.info("收到问题（%d 字）", len(question))
 
     if question in ("exit", "quit", "退出"):
         print("拜拜～")
@@ -62,8 +75,9 @@ while True:
             stream=True,
         )
     except Exception as exc:
-        sys.exit(f"\n❌ 调用失败：{exc}")
-
+        logger.error("调用失败：%s", exc)
+        messages.pop()
+        continue
     phase = ""
     answer_parts = []
 
@@ -89,6 +103,7 @@ while True:
 
     print()
     answer = "".join(answer_parts)
+    logger.info("回答完成（%d 字）", len(answer))
     if answer:
         messages.append({"role": "assistant", "content": answer})
     # ③ TODO：把 answer 也追加进 messages（你自己写）

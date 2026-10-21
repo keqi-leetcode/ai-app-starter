@@ -1,0 +1,6 @@
+2026-10-19 11:19:49,751 [INFO] 启动：model=deepseek-flash, temperature=0.5
+2026-10-19 11:37:50,148 [INFO] 启动：model=deepseek-flash, temperature=0.5
+2026-10-19 11:39:21,288 [INFO] 启动：model=deepseek-flash, temperature=0.5
+2026-10-19 11:39:23,112 [INFO] 收到问题（2 字）
+2026-10-19 11:39:23,493 [INFO] HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+2026-10-19 11:39:24,938 [INFO] 回答完成（190 字）
